@@ -1,0 +1,27 @@
+type Address {
+  country: String!
+  latitude: Float!
+  longitude: Float!
+}
+
+type RevenuePerCurrency {
+  currency: String!
+  total: Float!
+}
+
+enum BillingInterval {
+  MONTH,
+  YEAR
+}
+
+type Account {
+  id: ID!
+  address: Address!
+  currency: String!
+  totalRevenuePerCurrency: [RevenuePerCurrency!]!
+  billingInterval: BillingInterval!
+}
+
+type Query {
+  accounts: [Account!]!
+}

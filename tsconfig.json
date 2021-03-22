@@ -8,7 +8,7 @@
     "strict": true,
     "moduleResolution": "Node"
   },
-  "include": ["index.ts", "node_modules/@types"],
+  "include": ["index.ts", "node_modules/@types", "./types.d.ts"],
   "exclude": [
     "node_modules"
   ]
