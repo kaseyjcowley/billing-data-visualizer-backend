@@ -16,8 +16,21 @@ const startEvents = async () => {
     console.log(`waiting ${ms} ms...`);
     await wait(ms);
 
+    let accountEvent;
+
+    if (faker.random.boolean()) {
+      accountEvent = account();
+      console.log("Emitted a new account: %s", JSON.stringify(accountEvent));
+    } else {
+      accountEvent = changedAccount();
+      console.log(
+        "Emitted a changed account: %s",
+        JSON.stringify(accountEvent)
+      );
+    }
+
     pubsub.publish("ACCOUNT_EVENT", {
-      accountEvent: faker.random.boolean() ? account() : changedAccount(),
+      accountEvent,
     });
   }
 };
