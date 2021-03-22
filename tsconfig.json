@@ -1,15 +1,21 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "esnext",
-    "sourceMap": true,
+    "module": "CommonJS",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
     "noEmit": true,
-    "lib": ["ESNext"],
     "strict": true,
-    "moduleResolution": "Node",
-    "esModuleInterop": true
+    "lib": [
+      "es2020"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
-  "include": ["index.ts", "node_modules/@types", "./types.d.ts"],
+  "include": ["*.ts"],
   "exclude": [
     "node_modules"
   ]

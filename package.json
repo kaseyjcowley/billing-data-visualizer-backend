@@ -1,10 +1,10 @@
 {
   "name": "billing-data-visualizer",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --watch *.ts --exec 'ts-node' index.ts",
+    "dev": "nodemon index.ts",
     "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
