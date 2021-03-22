@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --watch index.ts --exec 'ts-node' index.ts",
+    "dev": "nodemon --watch *.ts --exec 'ts-node' index.ts",
     "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
