@@ -44,6 +44,20 @@ export type Query = {
   accounts: Array<Account>;
 };
 
+export type Change = {
+  __typename?: 'Change';
+  id: Scalars['ID'];
+  total: Scalars['Float'];
+  currency?: Maybe<Scalars['String']>;
+};
+
+export type AccountEvent = Account | Change;
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  accountEvent: AccountEvent;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -130,6 +144,9 @@ export type ResolversTypes = {
   Account: ResolverTypeWrapper<Account>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Query: ResolverTypeWrapper<{}>;
+  Change: ResolverTypeWrapper<Change>;
+  AccountEvent: ResolversTypes['Account'] | ResolversTypes['Change'];
+  Subscription: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
@@ -142,6 +159,9 @@ export type ResolversParentTypes = {
   Account: Account;
   ID: Scalars['ID'];
   Query: {};
+  Change: Change;
+  AccountEvent: ResolversParentTypes['Account'] | ResolversParentTypes['Change'];
+  Subscription: {};
   Boolean: Scalars['Boolean'];
 };
 
@@ -171,11 +191,29 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   accounts?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
 };
 
+export type ChangeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Change'] = ResolversParentTypes['Change']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  currency?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AccountEventResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccountEvent'] = ResolversParentTypes['AccountEvent']> = {
+  __resolveType: TypeResolveFn<'Account' | 'Change', ParentType, ContextType>;
+};
+
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  accountEvent?: SubscriptionResolver<ResolversTypes['AccountEvent'], "accountEvent", ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>;
   RevenuePerCurrency?: RevenuePerCurrencyResolvers<ContextType>;
   Account?: AccountResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Change?: ChangeResolvers<ContextType>;
+  AccountEvent?: AccountEventResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
 };
 
 

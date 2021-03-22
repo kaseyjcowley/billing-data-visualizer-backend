@@ -1,3 +1,6 @@
+###############
+# BEGIN QUERY #
+###############
 type Address {
   country: String!
   latitude: Float!
@@ -25,3 +28,24 @@ type Account {
 type Query {
   accounts: [Account!]!
 }
+#############
+# END QUERY #
+#############
+
+######################
+# BEGIN SUBSCRIPTION #
+######################
+type Change {
+  id: ID!
+  total: Float!
+  currency: String
+}
+
+union AccountEvent = Account | Change
+
+type Subscription {
+  accountEvent: AccountEvent!
+}
+####################
+# END SUBSCRIPTION #
+####################
