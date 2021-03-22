@@ -6,7 +6,8 @@
     "noEmit": true,
     "lib": ["ESNext"],
     "strict": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "esModuleInterop": true
   },
   "include": ["index.ts", "node_modules/@types", "./types.d.ts"],
   "exclude": [
