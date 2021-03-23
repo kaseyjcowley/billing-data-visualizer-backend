@@ -1,7 +1,7 @@
 import faker from "faker";
 
-import { pubsub } from "./pubsub";
-import { account, changedAccount } from "./dataGenerators";
+import { pubsub } from "../pubsub";
+import { account, changedAccount } from "./generators";
 
 const wait = (ms: number) =>
   new Promise((resolve) => {

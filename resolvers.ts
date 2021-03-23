@@ -1,11 +1,13 @@
+import fs from "fs";
 import { Resolvers } from "./types";
-import getInitialAccounts from "./data";
 import { pubsub } from "./pubsub";
 
 const resolvers: Resolvers = {
   Query: {
     accounts: () => {
-      return getInitialAccounts();
+      return JSON.parse(
+        fs.readFileSync(__dirname + "/data/db.json").toString("utf-8")
+      );
     },
   },
   AccountEvent: {
