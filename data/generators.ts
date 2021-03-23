@@ -1,52 +1,75 @@
-import axios from "axios";
+import { spawn } from "child_process";
 import faker from "faker";
 import { Account, BillingInterval } from "../types";
-import { currencyByCountry, CurrencyCode } from "./currencyByCountry";
+import {
+  countryCodeAndNames,
+  currencyByCountry,
+  CurrencyCode,
+} from "./currencyByCountry";
 
-type Response = {
-  nearest?: { latt: string; longt: string };
-};
+type LatLng = [latitude: number, longitude: number];
 
-type LatLng = {
-  latitude: number;
-  longitude: number;
-};
+const fetchCoordinates = (
+  country: string,
+  total: number
+): Promise<LatLng[]> => {
+  return new Promise((resolve) => {
+    const fullCountryName = countryCodeAndNames[country];
 
-const fetchLatAndLong = async (country: string): Promise<LatLng> => {
-  return await axios
-    .get<Response>(`https://api.3geonames.org/?randomland=${country}&json=1`)
-    .then(({ data }) => {
-      if (!data) {
-        console.warn(`Country not recognized by geo API: ${country}`);
-      }
-      return {
-        latitude: Number(data?.nearest?.latt ?? faker.address.latitude()),
-        longitude: Number(data?.nearest?.longt ?? faker.address.longitude()),
-      };
+    console.log(`generating lat/lngs for ${fullCountryName}`);
+    const python = spawn("python3", [
+      __dirname + "/latLngGenerator.py",
+      fullCountryName,
+      total.toString(),
+    ]);
+
+    let coordinates: LatLng[] = [];
+
+    // @ts-ignore
+    python.stdout.on("data", (data: string) => {
+      const parsed = JSON.parse(data.toString().trim());
+      console.log(`Got ${parsed}`);
+      coordinates = parsed;
     });
+
+    // @ts-ignore
+    python.stdout.on("close", () => {
+      resolve(coordinates);
+    });
+  });
 };
 
-const account = async (): Promise<Account> => {
-  const country = faker.random.arrayElement(Object.keys(currencyByCountry));
-  const currency = currencyByCountry[country];
-  const { latitude, longitude } = await fetchLatAndLong(country);
+const genAccountsFor = async (
+  country: string,
+  total: number
+): Promise<Account[]> => {
+  let accounts: Account[] = [];
+  const latsAndLongs = await fetchCoordinates(country, total);
 
-  return {
-    id: faker.random.uuid(),
-    address: {
-      country,
-      latitude,
-      longitude,
-    },
-    currency,
-    totalRevenuePerCurrency: [
-      {
-        currency,
-        total: Number(faker.finance.amount(24.99, 100000, 2)),
+  for (let i = 0; i < total; i++) {
+    const currency = currencyByCountry[country];
+
+    accounts.push({
+      id: faker.random.uuid(),
+      address: {
+        country,
+        latitude: latsAndLongs[i][0],
+        longitude: latsAndLongs[i][1],
       },
-    ],
-    billingInterval: faker.random.arrayElement(Object.values(BillingInterval)),
-  };
+      currency,
+      totalRevenuePerCurrency: [
+        {
+          currency,
+          total: Number(faker.finance.amount(24.99, 100000, 2)),
+        },
+      ],
+      billingInterval: faker.random.arrayElement(
+        Object.values(BillingInterval)
+      ),
+    });
+  }
+
+  return accounts;
 };
 
 const changedAccount = () => {
@@ -57,4 +80,4 @@ const changedAccount = () => {
   };
 };
 
-export { account, changedAccount };
+export { genAccountsFor, changedAccount };

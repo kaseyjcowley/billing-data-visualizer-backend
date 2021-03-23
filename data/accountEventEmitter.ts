@@ -1,7 +1,8 @@
 import faker from "faker";
 
 import { pubsub } from "../pubsub";
-import { account, changedAccount } from "./generators";
+import { genAccountsFor, changedAccount } from "./generators";
+import { countries } from "./currencyByCountry";
 
 const wait = (ms: number) =>
   new Promise((resolve) => {
@@ -19,7 +20,8 @@ const startEvents = async () => {
     let accountEvent;
 
     if (faker.random.boolean()) {
-      accountEvent = account();
+      const country = faker.random.arrayElement(countries);
+      accountEvent = (await genAccountsFor(country, 1))[0];
       console.log("Emitted a new account: %s", JSON.stringify(accountEvent));
     } else {
       accountEvent = changedAccount();
