@@ -1,4 +1,5 @@
 import { spawn } from "child_process";
+import { Buffer } from "buffer";
 import faker from "faker";
 import { Account, BillingInterval } from "../types";
 import {
@@ -16,6 +17,7 @@ const fetchCoordinates = (
 ): Promise<LatLng[]> => {
   return new Promise((resolve) => {
     const fullCountryName = countryCodeAndNames[country];
+    const buffer: Uint8Array[] = [];
 
     console.log(`generating lat/lngs for ${fullCountryName}`);
     const python = spawn("poetry", [
@@ -26,17 +28,17 @@ const fetchCoordinates = (
       total.toString(),
     ]);
 
-    let coordinates: LatLng[] = [];
-
     // @ts-ignore
-    python.stdout.on("data", (data: string) => {
-      const parsed = JSON.parse(data.toString().trim());
-      console.log(`Got ${parsed}`);
-      coordinates = parsed;
+    python.stdout.on("data", (data: Uint8Array) => {
+      buffer.push(data);
     });
 
     // @ts-ignore
     python.stdout.on("close", () => {
+      const coordinates: LatLng[] = JSON.parse(
+        Buffer.concat(buffer).toString().trim()
+      );
+
       resolve(coordinates);
     });
   });

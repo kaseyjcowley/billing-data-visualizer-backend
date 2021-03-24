@@ -18,8 +18,14 @@ const createWeightedArrayOfCountry = (
 
 const generateAccountCountries = () =>
   [
-    ...createWeightedArrayOfCountry("US", 0.3),
-    ...Array.from({ length: TOTAL_ACCOUNTS * 0.7 }, () =>
+    // This is somewhat reflective of what our percentage of total revenue is per country. See "Sales by Country" in Looker.
+    ...createWeightedArrayOfCountry("US", 0.55),
+    ...createWeightedArrayOfCountry("GB", 0.075),
+    ...createWeightedArrayOfCountry("AU", 0.05),
+    ...createWeightedArrayOfCountry("CA", 0.045),
+    ...createWeightedArrayOfCountry("FR", 0.03),
+    ...createWeightedArrayOfCountry("DE", 0.03),
+    ...Array.from({ length: TOTAL_ACCOUNTS * 0.22 }, () =>
       faker.random.arrayElement(countries)
     ),
   ].reduce(
