@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "generate-accounts": "ts-node ./data/generateInitialAccounts.ts",
-    "generate-types": "graphql-codegen --config codegen.yml"
+    "generate-types": "graphql-codegen --config codegen.yml",
+    "postinstall": "poetry install"
   },
   "dependencies": {
     "@types/ramda": "^0.27.39",
