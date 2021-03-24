@@ -3,6 +3,7 @@
 ###############
 type Address {
   country: String!
+  flag: String!
   latitude: Float!
   longitude: Float!
 }
@@ -19,6 +20,7 @@ enum BillingInterval {
 
 type Account {
   id: ID!
+  name: String!
   address: Address!
   currency: String!
   totalRevenuePerCurrency: [RevenuePerCurrency!]!

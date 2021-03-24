@@ -3,20 +3,18 @@ import { Buffer } from "buffer";
 import faker from "faker";
 import { Account, BillingInterval } from "../types";
 import {
-  countryCodeAndNames,
+  countryNameAndEmojiByCode,
   currencyByCountry,
-  CurrencyCode,
 } from "./currencyByCountry";
 import data from "../data/db.json";
 
 type LatLng = [latitude: number, longitude: number];
 
 const fetchCoordinates = (
-  country: string,
+  fullCountryName: string,
   total: number
 ): Promise<LatLng[]> => {
   return new Promise((resolve) => {
-    const fullCountryName = countryCodeAndNames[country];
     const buffer: Uint8Array[] = [];
 
     console.log(`generating lat/lngs for ${fullCountryName}`);
@@ -49,15 +47,18 @@ const genAccountsFor = async (
   total: number
 ): Promise<Account[]> => {
   let accounts: Account[] = [];
-  const latsAndLongs = await fetchCoordinates(country, total);
+  const { name: fullCountryName, flag } = countryNameAndEmojiByCode[country];
+  const latsAndLongs = await fetchCoordinates(fullCountryName, total);
 
   for (let i = 0; i < total; i++) {
     const currency = currencyByCountry[country];
 
     accounts.push({
       id: faker.random.uuid(),
+      name: faker.company.companyName(),
       address: {
         country,
+        flag,
         latitude: latsAndLongs[i][0],
         longitude: latsAndLongs[i][1],
       },

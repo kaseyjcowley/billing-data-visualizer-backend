@@ -15,6 +15,7 @@ export type Scalars = {
 export type Address = {
   __typename?: 'Address';
   country: Scalars['String'];
+  flag: Scalars['String'];
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
 };
@@ -33,6 +34,7 @@ export enum BillingInterval {
 export type Account = {
   __typename?: 'Account';
   id: Scalars['ID'];
+  name: Scalars['String'];
   address: Address;
   currency: Scalars['String'];
   totalRevenuePerCurrency: Array<RevenuePerCurrency>;
@@ -167,6 +169,7 @@ export type ResolversParentTypes = {
 
 export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
   country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  flag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   latitude?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   longitude?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -180,6 +183,7 @@ export type RevenuePerCurrencyResolvers<ContextType = any, ParentType extends Re
 
 export type AccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['Account'] = ResolversParentTypes['Account']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   address?: Resolver<ResolversTypes['Address'], ParentType, ContextType>;
   currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   totalRevenuePerCurrency?: Resolver<Array<ResolversTypes['RevenuePerCurrency']>, ParentType, ContextType>;

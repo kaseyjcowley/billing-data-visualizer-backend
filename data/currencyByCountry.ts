@@ -1,4 +1,6 @@
 import * as R from "ramda";
+// @ts-ignore
+import emoji from "node-emoji";
 
 enum CurrencyCode {
   GBP = "GBP",
@@ -148,6 +150,27 @@ const countryCodeAndNames: Record<string, string> = {
   LS: "Lesotho",
   GW: "Guinea-Bissau",
 };
+
+const countryNameAndEmojiByCode = R.mapObjIndexed(
+  R.applySpec({
+    name: R.nthArg(0),
+    flag: R.pipe(
+      // Get the country code
+      R.nthArg(1),
+      // Prepend :flag- to the country code
+      R.concat(":flag-"),
+      // Append : to finish off the emoji name
+      R.concat(R.__, ":"),
+      // Lowercase all of it
+      R.toLower,
+      // Wrap it in an array
+      R.of,
+      // Call the emoji.get with the flag-[cc] name
+      R.apply(emoji.get)
+    ),
+  }),
+  countryCodeAndNames
+);
 
 type Country = string;
 
@@ -314,4 +337,9 @@ const currencyByCountry = R.pipe(
   // @ts-ignore
 )(countryCurrencies) as Record<Country, CurrencyCode>;
 
-export { CurrencyCode, countryCodeAndNames, countries, currencyByCountry };
+export {
+  CurrencyCode,
+  countryNameAndEmojiByCode,
+  countries,
+  currencyByCountry,
+};
