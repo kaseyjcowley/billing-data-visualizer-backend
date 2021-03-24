@@ -78,10 +78,11 @@ const genAccountsFor = async (
 };
 
 const changedAccount = () => {
+  const existingRecord: Account = faker.random.arrayElement(data as Account[]);
   return {
-    id: faker.random.arrayElement(data).id,
+    id: existingRecord.id,
     total: faker.finance.amount(24.99, 10000, 2),
-    currency: faker.random.arrayElement(Object.values(CurrencyCode)),
+    currency: existingRecord.currency,
   };
 };
 
