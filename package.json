@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon index.ts",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate-accounts": "ts-node ./data/generateInitialAccounts.ts",
+    "generate-types": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@types/ramda": "^0.27.39",
