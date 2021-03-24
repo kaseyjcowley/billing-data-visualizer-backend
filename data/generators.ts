@@ -18,7 +18,9 @@ const fetchCoordinates = (
     const fullCountryName = countryCodeAndNames[country];
 
     console.log(`generating lat/lngs for ${fullCountryName}`);
-    const python = spawn("python3", [
+    const python = spawn("poetry", [
+      "run",
+      "python3",
       __dirname + "/latLngGenerator.py",
       fullCountryName,
       total.toString(),
