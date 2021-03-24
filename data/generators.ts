@@ -6,6 +6,7 @@ import {
   currencyByCountry,
   CurrencyCode,
 } from "./currencyByCountry";
+import data from "../data/db.json";
 
 type LatLng = [latitude: number, longitude: number];
 
@@ -74,7 +75,7 @@ const genAccountsFor = async (
 
 const changedAccount = () => {
   return {
-    id: faker.random.uuid(),
+    id: faker.random.arrayElement(data).id,
     total: faker.finance.amount(24.99, 10000, 2),
     currency: faker.random.arrayElement(Object.values(CurrencyCode)),
   };
