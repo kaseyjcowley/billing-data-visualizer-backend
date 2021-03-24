@@ -271,7 +271,6 @@ const countryCurrencies: Record<CurrencyCode, Country[]> = {
     "OM",
     "CR",
     "LR",
-    "GB",
     "CF",
     "MR",
     "PA",
